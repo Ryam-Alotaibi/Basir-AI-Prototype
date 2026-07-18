@@ -1,0 +1,91 @@
+{
+  "name": "بصير — وكيل تصنيف البلاغات والطلبات (AI حقيقي)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "basir-classify",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "1a1b1c1d-0001-4a1a-8a1a-000000000001",
+      "name": "استقبال البلاغ (Webhook)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-200, 0],
+      "webhookId": "basir-classify"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  model: \"gpt-4o-mini\",\n  temperature: 0,\n  response_format: { type: \"json_object\" },\n  messages: [\n    {\n      role: \"system\",\n      content: \"أنتِ وكيل تصنيف بلاغات وطلبات لنظام (بصير) التابع لوزارة العدل، مبني على نفس منطق كتالوج نظام داعم (Da'em/Khadamati). صنّفي كل نص وارد إلى واحدة من هاتين العائلتين فقط: incident (بلاغ عن عطل) أو request (طلب خدمة). ثم اختاري أقرب فئة فرعية واقعية من هذه القائمة: خدمة طلبات صرف أجهزة الحاسب الآلي، طلبات البريد الإلكتروني، طلبات الدعم التقني، صلاحيات نظام مراسلات، طلبات أسماء المستخدمين في نظام تقاضي محاكم، صلاحية العمل عن بعد للموظفين، تفعيل سيسكو جابر، صلاحيات البرمجيات، طلب صلاحية الطباعة، الدعم المعزز للعامل الشبكي، بلاغات التنفيذ، الدعم الفني للموارد البشرية، تطبيق/برنامج مايكروسوفت تيمز، بلاغات أسماء المستخدمين في نظام تقاضي محاكم، أعطال الأجهزة والطابعات، إدارة الطلب، بلاغات نقلة خدمات، الدعم الفني لبوابة خدمات، أعطال البريد الإلكتروني، بلاغات التنفيذ المالية. أعيدي فقط كائن JSON بالمفاتيح التالية: family (incident أو request)، category (اسم الفئة العربي الحرفي من القائمة)، confidence (رقم صحيح من 0 إلى 100 يمثل ثقتك)، suggestedSolution (جملة أو جملتين تقترحان حلًا أوليًا مناسبًا بالعربية).\"\n    },\n    {\n      role: \"user\",\n      content: $json.body.text || $json.body.description || \"\"\n    }\n  ]\n}) }}",
+        "options": {}
+      },
+      "id": "1a1b1c1d-0002-4a1a-8a1a-000000000002",
+      "name": "نداء الذكاء الاصطناعي الحقيقي (OpenAI)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [40, 0],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "REPLACE_WITH_YOUR_CREDENTIAL_ID",
+          "name": "OpenAI API Key (يدخلها الطالب بنفسه)"
+        }
+      },
+      "notes": "أنشئي Credential من نوع Header Auth باسم Authorization وقيمة: Bearer YOUR_OPENAI_API_KEY"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\nlet content = raw.choices?.[0]?.message?.content || '{}';\nlet parsed;\ntry { parsed = JSON.parse(content); } catch(e) { parsed = { family:'incident', category:'إدارة الطلب', confidence:35, suggestedSolution:'تعذّر تفسير رد الذكاء الاصطناعي — يحتاج مراجعة يدوية.' }; }\nreturn [{ json: parsed }];"
+      },
+      "id": "1a1b1c1d-0003-4a1a-8a1a-000000000003",
+      "name": "تحليل رد الذكاء الاصطناعي (Code)",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [280, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "id": "1a1b1c1d-0004-4a1a-8a1a-000000000004",
+      "name": "إرسال نتيجة التصنيف للموقع",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [520, 0]
+    }
+  ],
+  "connections": {
+    "استقبال البلاغ (Webhook)": {
+      "main": [
+        [ { "node": "نداء الذكاء الاصطناعي الحقيقي (OpenAI)", "type": "main", "index": 0 } ]
+      ]
+    },
+    "نداء الذكاء الاصطناعي الحقيقي (OpenAI)": {
+      "main": [
+        [ { "node": "تحليل رد الذكاء الاصطناعي (Code)", "type": "main", "index": 0 } ]
+      ]
+    },
+    "تحليل رد الذكاء الاصطناعي (Code)": {
+      "main": [
+        [ { "node": "إرسال نتيجة التصنيف للموقع", "type": "main", "index": 0 } ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "pinData": {}
+}
