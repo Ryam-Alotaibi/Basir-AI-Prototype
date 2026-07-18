@@ -4,6 +4,14 @@
 
 **بِصير** نموذج أولي (Prototype) لمنصة دعم فني تعتمد على الذكاء الاصطناعي، مصمّم لتطوير كفاءة نظام "داعم" (القائم على ServiceNow) في وزارة العدل، عبر طبقة استباقية تجمع بين التنبؤ بالأعطال، التصنيف الذكي للتذاكر، والقفزة الذكية للحلول التلقائية.
 
+### 🔗 [**افتحي الموقع المباشر (Live Demo) من هنا**](https://ryam-alotaibi.github.io/Basir-AI-Prototype/)
+
+<p>
+  <a href="https://ryam-alotaibi.github.io/Basir-AI-Prototype/">
+    <img src="https://img.shields.io/badge/بِصير-افتح_الموقع_المباشر-8A6D22?style=for-the-badge" alt="افتح الموقع المباشر">
+  </a>
+</p>
+
 > ⚠️ **ملاحظة مهمة:** جميع البيانات والتذاكر والأرقام المعروضة في هذا النموذج **افتراضية بالكامل لأغراض العرض التوضيحي**، ولا تعكس بيانات تشغيلية فعلية من أي نظام حقيقي بوزارة العدل.
 
 ---
@@ -76,6 +84,19 @@ python3 -m http.server 8000
 
 ### تفعيل وكيل التصنيف الحقيقي بالذكاء الاصطناعي (اختياري)
 راجعي ملف [تعليمات_تشغيل_n8n.md](تعليمات_تشغيل_n8n.md) لخطوات استيراد وتشغيل `basir_ai_classifier.n8n.json` وربطه بالموقع.
+
+---
+
+## 🔗 الروابط
+
+| الرابط | العنوان |
+|---|---|
+| 🌐 الموقع المباشر (Live Demo) | https://ryam-alotaibi.github.io/Basir-AI-Prototype/ |
+| 💻 مستودع الكود (Repository) | https://github.com/Ryam-Alotaibi/Basir-AI-Prototype |
+
+**QR Code للموقع المباشر:**
+
+<img src="screenshots/qr_live_site.png" alt="QR Code لموقع بِصير" width="180">
 
 ---
 
