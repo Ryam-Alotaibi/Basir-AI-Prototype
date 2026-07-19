@@ -68,13 +68,17 @@ python3 -m http.server 8000
 |---|---|
 | ![مراحل الحالة](screenshots/04_stage_flow.png) | ![إدارة التذاكر](screenshots/05_tickets.png) |
 
-| التنبؤ الاستباقي | الصفحة الرئيسية للموظف |
+| دمج الحوادث | التنبؤ الاستباقي |
 |---|---|
-| ![التنبؤ الاستباقي](screenshots/06_predict.png) | ![الرئيسية للموظف](screenshots/08_employee_home.png) |
+| ![دمج الحوادث](screenshots/10_merge.png) | ![التنبؤ الاستباقي](screenshots/06_predict.png) |
 
-| التقديم الذكي | عن النظام |
+| الصفحة الرئيسية للموظف | التقديم الذكي |
 |---|---|
-| ![التقديم الذكي](screenshots/09_employee_intake.png) | ![عن النظام](screenshots/07_about.png) |
+| ![الرئيسية للموظف](screenshots/08_employee_home.png) | ![التقديم الذكي](screenshots/09_employee_intake.png) |
+
+| عن النظام |
+|---|
+| ![عن النظام](screenshots/07_about.png) |
 
 ## التطوير المستقبلي
 
